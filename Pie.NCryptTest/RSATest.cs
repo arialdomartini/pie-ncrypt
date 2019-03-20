@@ -8,17 +8,23 @@ namespace Pie.NCryptTest
 {
     public class RSATest
     {
+        private readonly RSA _sut;
+
+        public RSATest()
+        {
+            _sut = new RSA();
+        }
+
         [Fact]
         public void should_sign_and_verify_a_string_message()
         {
             const string message = "message to sign";
 
-            var sut = new RSA();
-            var pair = sut.GeneratePair();
+            var pair = _sut.GeneratePair();
 
-            var signed = sut.Sign(message, pair.PrivateKey);
+            var signed = _sut.Sign(message, pair.PrivateKey);
 
-            var verification = sut.Verify(message, signed, pair.PublicKey);
+            var verification = _sut.Verify(message, signed, pair.PublicKey);
 
             verification.Should().Be(true);
         }
@@ -28,12 +34,11 @@ namespace Pie.NCryptTest
         {
             var message = "message to sign".ToByteArray();
 
-            var sut = new RSA();
-            var pair = sut.GeneratePair();
+            var pair = _sut.GeneratePair();
 
-            var signed = sut.Sign(message, pair.PrivateKey);
+            var signed = _sut.Sign(message, pair.PrivateKey);
 
-            var verification = sut.Verify(message, signed, pair.PublicKey);
+            var verification = _sut.Verify(message, signed, pair.PublicKey);
 
             verification.Should().Be(true);
         }
@@ -43,7 +48,6 @@ namespace Pie.NCryptTest
         {
             const string message = "message to sign";
 
-            var sut = new RSA();
             RSAParameters privateKey;
             RSAParameters publicKey;
             using (var rsa = new RSACryptoServiceProvider())
@@ -52,9 +56,9 @@ namespace Pie.NCryptTest
                 publicKey = rsa.ExportParameters(false);
             }
 
-            var signed = sut.Sign(message, privateKey);
+            var signed = _sut.Sign(message, privateKey);
 
-            var verification = sut.Verify(message, signed, publicKey);
+            var verification = _sut.Verify(message, signed, publicKey);
 
             verification.Should().Be(true);
         }
@@ -64,7 +68,6 @@ namespace Pie.NCryptTest
         {
             var message = "message to sign".ToByteArray();
 
-            var sut = new RSA();
             RSAParameters privateKey;
             RSAParameters publicKey;
             using (var rsa = new RSACryptoServiceProvider())
@@ -73,9 +76,9 @@ namespace Pie.NCryptTest
                 publicKey = rsa.ExportParameters(false);
             }
 
-            var signed = sut.Sign(message, privateKey);
+            var signed = _sut.Sign(message, privateKey);
 
-            var verification = sut.Verify(message, signed, publicKey);
+            var verification = _sut.Verify(message, signed, publicKey);
 
             verification.Should().Be(true);
         }
@@ -86,12 +89,11 @@ namespace Pie.NCryptTest
         {
             const string message = "message to sign";
 
-            var sut = new RSA();
-            var pair = sut.GeneratePair();
+            var pair = _sut.GeneratePair();
 
             var signed = "fake signature";
 
-            var verification = sut.Verify(message, signed, pair.PublicKey);
+            var verification = _sut.Verify(message, signed, pair.PublicKey);
 
             verification.Should().Be(false);
         }
@@ -101,12 +103,11 @@ namespace Pie.NCryptTest
         {
             const string message = "message to sign";
 
-            var sut = new RSA();
-            var pair = sut.GeneratePair();
+            var pair = _sut.GeneratePair();
 
             var signed = "fake signature".ToByteArray().ToBase64String();
 
-            var verification = sut.Verify(message, signed, pair.PublicKey);
+            var verification = _sut.Verify(message, signed, pair.PublicKey);
 
             verification.Should().Be(false);
         }
