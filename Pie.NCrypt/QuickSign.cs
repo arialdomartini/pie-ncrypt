@@ -3,9 +3,8 @@ using System.Text;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Security;
-using static RSA.QuickSign.RSACryptoServiceProviderExtensions;
 
-namespace RSA.QuickSign
+namespace Pie.NCrypt
 {
     public class QuickSign
     {
@@ -23,8 +22,7 @@ namespace RSA.QuickSign
         }
 
         public string Sign(byte[] @object, RSAParameters privateKey) =>
-            Using(rsa =>  rsa
-                .ImportKey(privateKey)
+            RSACryptoServiceProviderExtensions.Using(rsa =>  RSACryptoServiceProviderExtensions.ImportKey(rsa, privateKey)
                 .SignData(
                     @object,
                     HashAlgorithmName.SHA256,
@@ -44,8 +42,7 @@ namespace RSA.QuickSign
 
         public bool Verify(byte[] @object, string signature, RSAParameters publicKey) =>
             signature.BytesFromBase64().Map(s =>
-                Using(rsa => rsa
-                    .ImportKey(publicKey)
+                RSACryptoServiceProviderExtensions.Using(rsa => RSACryptoServiceProviderExtensions.ImportKey(rsa, publicKey)
                     .VerifyData(
                         @object,
                         s,

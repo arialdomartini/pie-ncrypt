@@ -1,7 +1,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace RSA.QuickSign
+namespace Pie.NCrypt
 {
     internal static class RSACryptoServiceProviderExtensions
     {

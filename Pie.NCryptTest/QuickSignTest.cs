@@ -1,9 +1,9 @@
 ﻿using System.Security.Cryptography;
 using FluentAssertions;
-using RSA.QuickSign;
+using Pie.NCrypt;
 using Xunit;
 
-namespace RSA.QuickSignTest
+namespace Pie.NCryptTest
 {
     public class QuickSignTest
     {
@@ -12,7 +12,7 @@ namespace RSA.QuickSignTest
         {
             const string message = "message to sign";
 
-            var simpleRsa = new QuickSign.QuickSign();
+            var simpleRsa = new QuickSign();
             var pair = simpleRsa.GeneratePair();
 
             var signed = simpleRsa.Sign(message, pair.PrivateKey);
@@ -27,7 +27,7 @@ namespace RSA.QuickSignTest
         {
             var message = "message to sign".ToByteArray();
 
-            var simpleRsa = new QuickSign.QuickSign();
+            var simpleRsa = new QuickSign();
             var pair = simpleRsa.GeneratePair();
 
             var signed = simpleRsa.Sign(message, pair.PrivateKey);
@@ -42,7 +42,7 @@ namespace RSA.QuickSignTest
         {
             const string message = "message to sign";
 
-            var simpleRsa = new QuickSign.QuickSign();
+            var simpleRsa = new QuickSign();
             RSAParameters privateKey;
             RSAParameters publicKey;
             using (var rsa = new RSACryptoServiceProvider())
@@ -63,7 +63,7 @@ namespace RSA.QuickSignTest
         {
             var message = "message to sign".ToByteArray();
 
-            var simpleRsa = new QuickSign.QuickSign();
+            var simpleRsa = new QuickSign();
             RSAParameters privateKey;
             RSAParameters publicKey;
             using (var rsa = new RSACryptoServiceProvider())
@@ -85,7 +85,7 @@ namespace RSA.QuickSignTest
         {
             const string message = "message to sign";
 
-            var simpleRsa = new QuickSign.QuickSign();
+            var simpleRsa = new QuickSign();
             var pair = simpleRsa.GeneratePair();
 
             var signed = "fake signature";
@@ -100,7 +100,7 @@ namespace RSA.QuickSignTest
         {
             const string message = "message to sign";
 
-            var simpleRsa = new QuickSign.QuickSign();
+            var simpleRsa = new QuickSign();
             var pair = simpleRsa.GeneratePair();
 
             var signed = "fake signature".ToByteArray().ToBase64String();

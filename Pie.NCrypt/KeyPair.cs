@@ -1,4 +1,4 @@
-namespace RSA.QuickSign
+namespace Pie.NCrypt
 {
     public class KeyPair
     {

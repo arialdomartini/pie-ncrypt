@@ -9,7 +9,7 @@ using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
 using Pie.Monads;
 
-namespace RSA.QuickSign
+namespace Pie.NCrypt
 {
     public static class ConversionExtensions
     {
