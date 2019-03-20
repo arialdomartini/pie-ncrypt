@@ -6,7 +6,7 @@ using Org.BouncyCastle.Security;
 
 namespace Pie.NCrypt
 {
-    public class QuickSign
+    public class RSA
     {
         private static readonly UnicodeEncoding Encoding = new UnicodeEncoding();
 

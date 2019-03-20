@@ -2,22 +2,23 @@
 using FluentAssertions;
 using Pie.NCrypt;
 using Xunit;
+using RSA = Pie.NCrypt.RSA;
 
 namespace Pie.NCryptTest
 {
-    public class QuickSignTest
+    public class RSATest
     {
         [Fact]
         public void should_sign_and_verify_a_string_message()
         {
             const string message = "message to sign";
 
-            var simpleRsa = new QuickSign();
-            var pair = simpleRsa.GeneratePair();
+            var sut = new RSA();
+            var pair = sut.GeneratePair();
 
-            var signed = simpleRsa.Sign(message, pair.PrivateKey);
+            var signed = sut.Sign(message, pair.PrivateKey);
 
-            var verification = simpleRsa.Verify(message, signed, pair.PublicKey);
+            var verification = sut.Verify(message, signed, pair.PublicKey);
 
             verification.Should().Be(true);
         }
@@ -27,12 +28,12 @@ namespace Pie.NCryptTest
         {
             var message = "message to sign".ToByteArray();
 
-            var simpleRsa = new QuickSign();
-            var pair = simpleRsa.GeneratePair();
+            var sut = new RSA();
+            var pair = sut.GeneratePair();
 
-            var signed = simpleRsa.Sign(message, pair.PrivateKey);
+            var signed = sut.Sign(message, pair.PrivateKey);
 
-            var verification = simpleRsa.Verify(message, signed, pair.PublicKey);
+            var verification = sut.Verify(message, signed, pair.PublicKey);
 
             verification.Should().Be(true);
         }
@@ -42,7 +43,7 @@ namespace Pie.NCryptTest
         {
             const string message = "message to sign";
 
-            var simpleRsa = new QuickSign();
+            var sut = new RSA();
             RSAParameters privateKey;
             RSAParameters publicKey;
             using (var rsa = new RSACryptoServiceProvider())
@@ -51,9 +52,9 @@ namespace Pie.NCryptTest
                 publicKey = rsa.ExportParameters(false);
             }
 
-            var signed = simpleRsa.Sign(message, privateKey);
+            var signed = sut.Sign(message, privateKey);
 
-            var verification = simpleRsa.Verify(message, signed, publicKey);
+            var verification = sut.Verify(message, signed, publicKey);
 
             verification.Should().Be(true);
         }
@@ -63,7 +64,7 @@ namespace Pie.NCryptTest
         {
             var message = "message to sign".ToByteArray();
 
-            var simpleRsa = new QuickSign();
+            var sut = new RSA();
             RSAParameters privateKey;
             RSAParameters publicKey;
             using (var rsa = new RSACryptoServiceProvider())
@@ -72,9 +73,9 @@ namespace Pie.NCryptTest
                 publicKey = rsa.ExportParameters(false);
             }
 
-            var signed = simpleRsa.Sign(message, privateKey);
+            var signed = sut.Sign(message, privateKey);
 
-            var verification = simpleRsa.Verify(message, signed, publicKey);
+            var verification = sut.Verify(message, signed, publicKey);
 
             verification.Should().Be(true);
         }
@@ -85,12 +86,12 @@ namespace Pie.NCryptTest
         {
             const string message = "message to sign";
 
-            var simpleRsa = new QuickSign();
-            var pair = simpleRsa.GeneratePair();
+            var sut = new RSA();
+            var pair = sut.GeneratePair();
 
             var signed = "fake signature";
 
-            var verification = simpleRsa.Verify(message, signed, pair.PublicKey);
+            var verification = sut.Verify(message, signed, pair.PublicKey);
 
             verification.Should().Be(false);
         }
@@ -100,12 +101,12 @@ namespace Pie.NCryptTest
         {
             const string message = "message to sign";
 
-            var simpleRsa = new QuickSign();
-            var pair = simpleRsa.GeneratePair();
+            var sut = new RSA();
+            var pair = sut.GeneratePair();
 
             var signed = "fake signature".ToByteArray().ToBase64String();
 
-            var verification = simpleRsa.Verify(message, signed, pair.PublicKey);
+            var verification = sut.Verify(message, signed, pair.PublicKey);
 
             verification.Should().Be(false);
         }
