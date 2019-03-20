@@ -7,6 +7,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
+using Pie.Monads;
 
 namespace RSA.QuickSign
 {
@@ -29,8 +30,17 @@ namespace RSA.QuickSign
         private static RsaPrivateCrtKeyParameters ToPrivateKey(this string serializedPrivate) =>
             (RsaPrivateCrtKeyParameters) PrivateKeyFactory.CreateKey(Convert.FromBase64String(serializedPrivate));
 
-        public static byte[] BytesFromBase64(this string @string) =>
-            Convert.FromBase64String(@string);
+        public static Either<bool, byte[]> BytesFromBase64(this string @string)
+        {
+            try
+            {
+                return Convert.FromBase64String(@string);
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
 
         internal static string ToBase64String(this byte[] o) =>
             Convert.ToBase64String(o);

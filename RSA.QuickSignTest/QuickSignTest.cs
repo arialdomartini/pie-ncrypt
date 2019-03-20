@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Security.Cryptography;
+using FluentAssertions;
 using RSA.QuickSign;
 using Xunit;
 
@@ -20,6 +21,64 @@ namespace RSA.QuickSignTest
 
             verification.Should().Be(true);
         }
+
+        [Fact]
+        public void should_sign_and_verify_a_byte_array_message()
+        {
+            var message = "message to sign".ToByteArray();
+
+            var simpleRsa = new QuickSign.QuickSign();
+            var pair = simpleRsa.GeneratePair();
+
+            var signed = simpleRsa.Sign(message, pair.PrivateKey);
+
+            var verification = simpleRsa.Verify(message, signed, pair.PublicKey);
+
+            verification.Should().Be(true);
+        }
+
+        [Fact]
+        public void should_sign_and_verify_a_string_message_using_RSAParameters()
+        {
+            const string message = "message to sign";
+
+            var simpleRsa = new QuickSign.QuickSign();
+            RSAParameters privateKey;
+            RSAParameters publicKey;
+            using (var rsa = new RSACryptoServiceProvider())
+            {
+                privateKey = rsa.ExportParameters(true);
+                publicKey = rsa.ExportParameters(false);
+            }
+
+            var signed = simpleRsa.Sign(message, privateKey);
+
+            var verification = simpleRsa.Verify(message, signed, publicKey);
+
+            verification.Should().Be(true);
+        }
+
+        [Fact]
+        public void should_sign_and_verify_a_byte_array_message_using_RSAParameters()
+        {
+            var message = "message to sign".ToByteArray();
+
+            var simpleRsa = new QuickSign.QuickSign();
+            RSAParameters privateKey;
+            RSAParameters publicKey;
+            using (var rsa = new RSACryptoServiceProvider())
+            {
+                privateKey = rsa.ExportParameters(true);
+                publicKey = rsa.ExportParameters(false);
+            }
+
+            var signed = simpleRsa.Sign(message, privateKey);
+
+            var verification = simpleRsa.Verify(message, signed, publicKey);
+
+            verification.Should().Be(true);
+        }
+
 
         [Fact]
         public void should_detect_a_fake_signature()

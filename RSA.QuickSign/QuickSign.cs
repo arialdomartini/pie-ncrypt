@@ -4,6 +4,8 @@ using System.Text;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Security;
+using Pie.Monads;
+using static RSA.QuickSign.RSACryptoServiceProviderExtensions;
 
 namespace RSA.QuickSign
 {
@@ -23,39 +25,44 @@ namespace RSA.QuickSign
                 pair.SerializedPublic());
         }
 
-        public string Sign(string message, string serializedPrivateKey)
-        {
-            using (var rsa = RsaCryptoServiceProvider)
-            {
-                rsa.ImportParameters(
-                    serializedPrivateKey.ToRsaParameterPrivate());
-
-                var signData = rsa.SignData(
-                    message.ToByteArray(),
+        public string Sign(byte[] @object, RSAParameters privateKey) =>
+            Using(rsa =>  rsa
+                .ImportKey(privateKey)
+                .SignData(
+                    @object,
                     HashAlgorithmName.SHA256,
-                    RSASignaturePadding.Pkcs1);
+                    RSASignaturePadding.Pkcs1)
+                .ToBase64String()
+            );
 
-                return signData.ToBase64String();
+        public string Sign(byte[] @object, string serializedPrivateKey) =>
+            Sign(@object, serializedPrivateKey.ToRsaParameterPrivate());
 
-            }
-        }
+        public string Sign(string message, string serializedPrivateKey) =>
+            Sign(message.ToByteArray(), serializedPrivateKey);
 
-        public bool Verify(string message, string signature, string publicKey)
-        {
-            try
-            {
-                using (var rsa = RsaCryptoServiceProvider)
-                {
-                    rsa.ImportParameters(publicKey.ToRsaParametersPublic());
+        public string Sign(string message, RSAParameters privateKey) =>
+            Sign(message.ToByteArray(), privateKey);
 
-                    return rsa.VerifyData(Encoding.GetBytes(message), signature.BytesFromBase64(), HashAlgorithmName.SHA256,
-                        RSASignaturePadding.Pkcs1);
-                }
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-        }
+
+        public bool Verify(byte[] @object, string signature, RSAParameters publicKey) =>
+            signature.BytesFromBase64().Map(s =>
+                Using(rsa => rsa
+                    .ImportKey(publicKey)
+                    .VerifyData(
+                        @object,
+                        s,
+                        HashAlgorithmName.SHA256,
+                        RSASignaturePadding.Pkcs1))
+            ).Match(l => false, r => r);
+
+        public bool Verify(string message, string signature, string publicKey) =>
+            Verify(Encoding.GetBytes(message), signature, publicKey);
+
+        public bool Verify(string message, string signature, RSAParameters publicKey) =>
+            Verify(Encoding.GetBytes(message), signature, publicKey);
+
+        public bool Verify(byte[] @object, string signature, string publicKey) =>
+            Verify(@object, signature, publicKey.ToRsaParametersPublic());
     }
 }
