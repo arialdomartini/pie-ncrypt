@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageId>RSA.QuickSign</PackageId>
+        <Title>Easily sign messages and verify signatures with RSA asymmetric encription</Title>
+        <Version>1.0.0</Version>
+        <Authors>Arialdo Martini</Authors>
+        <PackageProjectUrl>https://github.com/arialdomartini/rsa.quicksign</PackageProjectUrl>
+        <TargetFrameworks>netstandard2;net40</TargetFrameworks>
+    </PropertyGroup>
+
+</Project>
