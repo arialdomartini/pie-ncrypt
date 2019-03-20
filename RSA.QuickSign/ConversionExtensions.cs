@@ -18,17 +18,8 @@ namespace RSA.QuickSign
         public static byte[] ToByteArray(this string s) =>
             Encoding.GetBytes(s);
 
-        public static RSAParameters ToRsaParametersPublic(this string publicKey) =>
-            DotNetUtilities.ToRSAParameters(publicKey.ToPublicKey());
-
-        public static RSAParameters ToRsaParameterPrivate(this string serializedPrivateKey) =>
-            DotNetUtilities.ToRSAParameters(serializedPrivateKey.ToPrivateKey());
-
-        private static RsaKeyParameters ToPublicKey(this string serializedPublic) =>
-            (RsaKeyParameters) PublicKeyFactory.CreateKey(Convert.FromBase64String(serializedPublic));
-
-        private static RsaPrivateCrtKeyParameters ToPrivateKey(this string serializedPrivate) =>
-            (RsaPrivateCrtKeyParameters) PrivateKeyFactory.CreateKey(Convert.FromBase64String(serializedPrivate));
+        internal static string ToBase64String(this byte[] o) =>
+            Convert.ToBase64String(o);
 
         public static Either<bool, byte[]> BytesFromBase64(this string @string)
         {
@@ -42,8 +33,17 @@ namespace RSA.QuickSign
             }
         }
 
-        internal static string ToBase64String(this byte[] o) =>
-            Convert.ToBase64String(o);
+        public static RSAParameters ToRsaParametersPublic(this string publicKey) =>
+            DotNetUtilities.ToRSAParameters(publicKey.ToPublicKey());
+
+        public static RSAParameters ToRsaParameterPrivate(this string serializedPrivateKey) =>
+            DotNetUtilities.ToRSAParameters(serializedPrivateKey.ToPrivateKey());
+
+        private static RsaKeyParameters ToPublicKey(this string serializedPublic) =>
+            (RsaKeyParameters) PublicKeyFactory.CreateKey(Convert.FromBase64String(serializedPublic));
+
+        private static RsaPrivateCrtKeyParameters ToPrivateKey(this string serializedPrivate) =>
+            (RsaPrivateCrtKeyParameters) PrivateKeyFactory.CreateKey(Convert.FromBase64String(serializedPrivate));
 
         private static byte[] Encoded(this Asn1Encodable asn1Encodable) =>
             asn1Encodable.ToAsn1Object().GetDerEncoded();
