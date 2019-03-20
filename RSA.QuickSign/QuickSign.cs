@@ -1,10 +1,8 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Security;
-using Pie.Monads;
 using static RSA.QuickSign.RSACryptoServiceProviderExtensions;
 
 namespace RSA.QuickSign
@@ -12,7 +10,6 @@ namespace RSA.QuickSign
     public class QuickSign
     {
         private static readonly UnicodeEncoding Encoding = new UnicodeEncoding();
-        private static RSACryptoServiceProvider RsaCryptoServiceProvider => new RSACryptoServiceProvider(1024);
 
         public KeyPair GeneratePair()
         {
