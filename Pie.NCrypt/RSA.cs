@@ -22,7 +22,8 @@ namespace Pie.NCrypt
         }
 
         public string Sign(byte[] @object, RSAParameters privateKey) =>
-            RSACryptoServiceProviderExtensions.Using(rsa =>  RSACryptoServiceProviderExtensions.ImportKey(rsa, privateKey)
+            RSACryptoServiceProviderExtensions.Using(rsa =>  rsa
+                .ImportKey(privateKey)
                 .SignData(
                     @object,
                     HashAlgorithmName.SHA256,
@@ -42,7 +43,8 @@ namespace Pie.NCrypt
 
         public bool Verify(byte[] @object, string signature, RSAParameters publicKey) =>
             signature.BytesFromBase64().Map(s =>
-                RSACryptoServiceProviderExtensions.Using(rsa => RSACryptoServiceProviderExtensions.ImportKey(rsa, publicKey)
+                RSACryptoServiceProviderExtensions.Using(rsa => rsa
+                    .ImportKey(publicKey)
                     .VerifyData(
                         @object,
                         s,
