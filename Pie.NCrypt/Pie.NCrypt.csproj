@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <PackageId>RSA.QuickSign</PackageId>
-        <Title>Easily sign messages and verify signatures with RSA asymmetric encription</Title>
+        <PackageId>Pie.NCrypt</PackageId>
+        <Title>Easily sign messages and verify signatures with RSA public/private keys</Title>
         <Version>1.0.0</Version>
         <Authors>Arialdo Martini</Authors>
-        <PackageProjectUrl>https://github.com/arialdomartini/rsa.quicksign</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/arialdomartini/pie.ncrypt</PackageProjectUrl>
         <TargetFrameworks>netstandard2</TargetFrameworks>
     </PropertyGroup>
 

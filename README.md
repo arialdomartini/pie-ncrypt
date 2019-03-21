@@ -1,11 +1,11 @@
-Pie.NCrypt
-==========
-Pie.NCrypt is a .Net Standard C# library to sign string and byte-array messages, and to verify their signatures. It makes use of the RSA asymmetric, public-key cryptosystem.
+NCrypt
+======
+NCrypt is a .Net Standard C# library to sign string and byte-array messages, and to verify their signatures. It makes use of the RSA asymmetric, public-key cryptosystem.
 
 This is an educational library aimed to ease workshops on BlockChain and cryptocurrencies (see [neat-coin](http://github.com/arialdomartini/neat-coin/)). It is not intented to be used in mission-critical, production systems.
 
 ## Install
-`Pie.NCrypt` is available as a NuGet Package. Install it with:
+NCrypt is available as a NuGet Package. Install it with:
 
 ```bash
 dotnet add package Pie.NCrypt
@@ -14,7 +14,7 @@ dotnet add package Pie.NCrypt
 or
  
 ```bash
-PM>  Install-Package Pie.NCrypt
+PM> Install-Package Pie.NCrypt
 ```
 
 ## Build from source
