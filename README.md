@@ -1,5 +1,75 @@
 Pie.NCrypt
 ==========
-A library to sign messages and verify signatures with the RSA asymmetric, public-key cryptosystem.
+Pie.NCrypt is a .Net Standard C# library to sign string and byte-array messages, and to verify their signatures. It makes use of the RSA asymmetric, public-key cryptosystem.
 
-* [Building from source code](docs/building.md)
+This is an educational library aimed to ease workshops on BlockChain and cryptocurrencies (see [neat-coin](http://github.com/arialdomartini/neat-coin/)). It is not intented to be used in mission-critical, production systems.
+
+## Install
+`Pie.NCrypt` is available as a NuGet Package. Install it with:
+
+```bash
+dotnet add package Pie.NCrypt
+```
+ 
+or
+ 
+```bash
+PM>  Install-Package Pie.NCrypt
+```
+
+## Build from source
+If you prefer to compile the library from the source code, follow the instructions in the page [Building from source code](docs/building.md).
+
+## Usage
+Create an instance of `RSA`:
+
+```csharp
+var rsa = new Pie.NCrypt.RSA();
+```
+
+In order to sign messages and verify signatures you need a RSA Private Key and its corresponding Public Key.
+
+You can create one public/private key pair with:
+
+```csharp
+var pair = rsa.GenerateKeyPair();
+```
+
+which returns a structure with 2 random RSA keys:
+
+```csharp
+Console.WriteLine(pair.PrivateKey);
+
+// MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAIYjrEkSdzWUOs/+7vUCtQCeCLjceCsNOoESEHOWQcq7fYtBJzqmyNXESRfLlmpW4RgKNBIa7oT+PqQ+jLnqnUHz8WcdE2IUidXqj6YIEJlwa18+R0lJ/eRYIunBA9nFX1rZT2S3ia70XQ+nAdgIwIZpl7LYfyUFcafPsMIz91gZAgMBAAECgYACzRgKu/aNAgpDu7hiDh4qpuIxhG695FH8jhDyp+KuhJjBK880S2m9SlLjELVI7j9jDVV+t2LCgUNQ2CN0Ilvyh/GYDpJrRSQbLdArzU/KZDyUR8TNlD4kyilsvQL5ey7ox1do2LGZdCk7W+DU1UOEIo3Zp84rzrY2gHnLDpv6LQJBAPjBU3Nt9rX/rhtnHf5J8tAfdzFhUR7KyXh+7hWVA54lcP24SAH0KbFLHpNqbkVEYGkEX0cLECjWTw8Knr8RJiUCQQCKC8q7AjmSOXlipHTM0P+vhHDx5CpiizT4a2MnW0YALWaMSizmcQeWbb6eXWG6VsB0nO3dfY7KF8fAoc3244XlAkADMyFqq7BvuOE5cwMcwUDBUpZK6VCMz9j1ltRjLK6GOz8P1G4AsG5U3H2BMe5HL9D5qNe85zSHAfK0Y9OU65iNAkAt1kaFm/KD1COzFkpWK9uKax6ZoxpTyEdZaUbuLYdrzadsU8De748GawBNU1J87gtPbUAqOGOuRQElvFRIcznlAkAa5/BgIohCskelV3S70jLo2p/SNKi9A5lCjglAiQ9YukPEx4PQQQqz2P5qH3zjNHwPiTs4jStT1q9ogARlHGMw
+
+Console.WriteLine(pair.PublicKey);
+
+//  MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCGI6xJEnc1lDrP/u71ArUAngi43HgrDTqBEhBzlkHKu32LQSc6psjVxEkXy5ZqVuEYCjQSGu6E/j6kPoy56p1B8/FnHRNiFInV6o+mCBCZcGtfPkdJSf3kWCLpwQPZxV9a2U9kt4mu9F0PpwHYCMCGaZey2H8lBXGnz7DCM/dYGQIDAQAB
+```
+
+
+Signing a string message with the Private key creates a Signature:
+
+```csharp
+var signature = rsa.Sign("some message", pair.PrivateKey);
+
+Console.WriteLine(signature);
+
+// FCBt0OjEgrgEZuhfUjpgPvCbCrc1gXZEFi05iKIopi8OJrZcdIaVgWREy7kZHSGGMsecmOOugNtJXCY+fHnPyDp4eK73S9cWJErNfUnB+pEm5XlxI82cKMn4Bvxr1CXrLv6PwFyGCUykv4CWP5SEHhkMuLEFTZRQ/3XcrgzkgAE=
+```
+
+The authenticity of the message signature can be verified by using the message itself, the provided Signature value and the Public Key corresponding to the Private Key used to sign the message:
+
+```csharp
+var isValid = rsa.Verify("some message", signature, pair.PublicKey);  // true
+```
+
+If either:
+
+* the signature has been faked
+* the Private Key that signed the message is not corresponding to the Public Key used during the verification;
+* the Message has been modified;
+
+the verification fails and returns `false`.
+
+

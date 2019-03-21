@@ -13,7 +13,7 @@ Run:
 dotnet test Pie.NCryptTest/Pie.NCryptTest.csproj
 ```
 
-It should be possible to run tests with a simpler `dotnet test`, but I run in the issue ['dotnet test' in solution folder fails when non-test projects are in the solution #1129](http://wiki.c2.com/?PrimitiveObsession)
+It should be possible to run tests with a simpler `dotnet test`, but I run in the issue ['dotnet test' in solution folder fails when non-test projects are in the solution #1129](https://github.com/Microsoft/vstest/issues/1129).
 
 ## NuGet package
 Create the NuGet package with:

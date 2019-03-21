@@ -10,7 +10,7 @@ namespace Pie.NCrypt
     {
         private static readonly UnicodeEncoding Encoding = new UnicodeEncoding();
 
-        public KeyPair GeneratePair()
+        public KeyPair GenerateKeyPair()
         {
             var rsaKeyPairGenerator = new RsaKeyPairGenerator();
             rsaKeyPairGenerator.Init(new KeyGenerationParameters(new SecureRandom(), 1024));

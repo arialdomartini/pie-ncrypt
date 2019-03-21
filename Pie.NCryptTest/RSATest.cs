@@ -34,11 +34,11 @@ namespace Pie.NCryptTest
                       dictum nunc justo sit amet elit.")]
         public void should_sign_and_verify_a_string_message(string message)
         {
-            var pair = _sut.GeneratePair();
+            var pair = _sut.GenerateKeyPair();
 
-            var signed = _sut.Sign(message, pair.PrivateKey);
+            var signature = _sut.Sign(message, pair.PrivateKey);
 
-            var verification = _sut.Verify(message, signed, pair.PublicKey);
+            var verification = _sut.Verify(message, signature, pair.PublicKey);
 
             verification.Should().Be(true);
         }
@@ -48,11 +48,11 @@ namespace Pie.NCryptTest
         {
             var message = "message to sign".ToByteArray();
 
-            var pair = _sut.GeneratePair();
+            var pair = _sut.GenerateKeyPair();
 
-            var signed = _sut.Sign(message, pair.PrivateKey);
+            var signature = _sut.Sign(message, pair.PrivateKey);
 
-            var verification = _sut.Verify(message, signed, pair.PublicKey);
+            var verification = _sut.Verify(message, signature, pair.PublicKey);
 
             verification.Should().Be(true);
         }
@@ -70,9 +70,9 @@ namespace Pie.NCryptTest
                 publicKey = rsa.ExportParameters(false);
             }
 
-            var signed = _sut.Sign(message, privateKey);
+            var signature = _sut.Sign(message, privateKey);
 
-            var verification = _sut.Verify(message, signed, publicKey);
+            var verification = _sut.Verify(message, signature, publicKey);
 
             verification.Should().Be(true);
         }
@@ -90,9 +90,9 @@ namespace Pie.NCryptTest
                 publicKey = rsa.ExportParameters(false);
             }
 
-            var signed = _sut.Sign(message, privateKey);
+            var signature = _sut.Sign(message, privateKey);
 
-            var verification = _sut.Verify(message, signed, publicKey);
+            var verification = _sut.Verify(message, signature, publicKey);
 
             verification.Should().Be(true);
         }
@@ -103,11 +103,11 @@ namespace Pie.NCryptTest
         {
             const string message = "message to sign";
 
-            var pair = _sut.GeneratePair();
+            var pair = _sut.GenerateKeyPair();
 
-            var signed = "fake signature";
+            var signature = "fake signature";
 
-            var verification = _sut.Verify(message, signed, pair.PublicKey);
+            var verification = _sut.Verify(message, signature, pair.PublicKey);
 
             verification.Should().Be(false);
         }
@@ -117,11 +117,38 @@ namespace Pie.NCryptTest
         {
             const string message = "message to sign";
 
-            var pair = _sut.GeneratePair();
+            var pair = _sut.GenerateKeyPair();
 
-            var signed = "fake signature".ToByteArray().ToBase64String();
+            var signature = "fake signature".ToByteArray().ToBase64String();
 
-            var verification = _sut.Verify(message, signed, pair.PublicKey);
+            var verification = _sut.Verify(message, signature, pair.PublicKey);
+
+            verification.Should().Be(false);
+        }
+
+        [Fact]
+        public void should_detect_a_faked_message()
+        {
+            var message = "message to sign";
+            var pair = _sut.GenerateKeyPair();
+
+            var signature = _sut.Sign(message, pair.PrivateKey);
+
+            var verification = _sut.Verify("modified message to sign", signature, pair.PublicKey);
+
+            verification.Should().Be(false);
+        }
+
+        [Fact]
+        public void should_detect_if_the_message_has_been_signed_by_not_corresponding_private_key()
+        {
+            var message = "message to sign";
+            var pair = _sut.GenerateKeyPair();
+            var anotherPair = _sut.GenerateKeyPair();
+
+            var signature = _sut.Sign(message, anotherPair.PrivateKey);
+
+            var verification = _sut.Verify("modified message to sign", signature, pair.PublicKey);
 
             verification.Should().Be(false);
         }
