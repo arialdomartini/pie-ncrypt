@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
@@ -59,5 +60,8 @@ namespace Pie.NCrypt
                 .CreateSubjectPublicKeyInfo(pair.Public)
                 .Encoded()
                 .ToBase64String();
+
+        public static string Serialized(this object @object)
+            => JsonConvert.SerializeObject(@object);
     }
 }

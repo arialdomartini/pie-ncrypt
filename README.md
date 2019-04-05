@@ -84,3 +84,28 @@ If either:
 the verification fails and returns `false`.
 
 
+## Calculating SHA1 hashes
+Use:
+```csharp
+var someObject = new SomeObject{ Field1 = "some value", Field2 = "second value"};
+
+var hash = new SHA1().HashOf(someObject);
+```
+
+
+Classes can be private or anonymous.
+
+```csharp
+var someObject = 
+    new {
+        Field1 = "some value 1",
+        Field2 = "some value 2",
+        Field3 = 100
+    };
+
+var hash = new SHA1().HashOf(someObject);
+
+// HYXB+T6Eq5vxKBa6elmT4Av/a4A=
+```
+
+Hash is calculated agains public fields and properties. Private elements are ignored.

@@ -7,6 +7,7 @@
         <Authors>Arialdo Martini</Authors>
         <PackageProjectUrl>https://github.com/arialdomartini/pie.ncrypt</PackageProjectUrl>
         <TargetFrameworks>netstandard2</TargetFrameworks>
+        <PackageVersion>1.0.1</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -14,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
       <PackageReference Include="Pie.Monads" Version="1.0.5" />
       <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
     </ItemGroup>
