@@ -21,6 +21,7 @@ PM> Install-Package Pie.NCrypt
 If you prefer to compile the library from the source code, follow the instructions in the page [Building from source code](docs/building.md).
 
 ## Usage
+### RSA Signature
 Create an instance of `RSA`:
 
 ```csharp
@@ -84,14 +85,13 @@ If either:
 the verification fails and returns `false`.
 
 
-## Calculating SHA1 hashes
+### Calculating SHA1 hashes
 Use:
 ```csharp
 var someObject = new SomeObject{ Field1 = "some value", Field2 = "second value"};
 
 var hash = new SHA1().HashOf(someObject);
 ```
-
 
 Classes can be private or anonymous.
 
@@ -108,4 +108,4 @@ var hash = new SHA1().HashOf(someObject);
 // HYXB+T6Eq5vxKBa6elmT4Av/a4A=
 ```
 
-Hash is calculated agains public fields and properties. Private elements are ignored.
+Hash is calculated against public fields and properties. Private elements are ignored.
